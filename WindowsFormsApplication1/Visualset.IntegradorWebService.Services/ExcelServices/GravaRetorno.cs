@@ -21,7 +21,7 @@ namespace IntegradorWebService.ExcelServices
 
             while (Properties.Settings.Default.SaveFile == "")
             {
-                System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo de log de importação.", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
                 using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
                 {
                     folderBrowserDialog.SelectedPath = Properties.Settings.Default.SaveFile;

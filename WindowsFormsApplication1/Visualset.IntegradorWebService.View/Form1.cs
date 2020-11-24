@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Configuration;
 using IntegradorWebService.Visualset.IntegradorWebService.Entities;
 using IntegradorWebService.Visualset.IntegradorWebService.View;
+using IntegradorWebService.VIPP;
 
 namespace IntegradorWebService
 {
@@ -25,6 +26,7 @@ namespace IntegradorWebService
         public Form1(string usuario, string senha)
         {
             InitializeComponent();
+            BtnFtp.Visible = false;
             this.Text = "Importador Visual Personalizado - Versão: " + Application.ProductVersion + "  -  " + usuario;
             btnEnviar.Enabled = false;
             lPerfil = RestPerfilImportacao.ProcessaListaPerfil(usuario, senha);
@@ -75,8 +77,18 @@ namespace IntegradorWebService
                         break;
 
                 }
-                                
-                MessageBox.Show("Importação finalizada", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
+                if(TrataRetorno.lRetornoValida.Count > 0)
+                {
+                    MessageBox.Show(string.Concat("Foram importados ", TrataRetorno.lRetornoValida.Count, " objetos com sucesso!"), "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                if (TrataRetorno.lRetornoInvalida.Count > 0)
+                {
+                    MessageBox.Show(string.Concat(TrataRetorno.lRetornoInvalida.Count, " Apresentaram erro, confira o log de importação."), "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+
+                MessageBox.Show("Importação finalizada.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+
                 path = null;
                 labelPath.Text = "";
                 labelProgresso.Text = "";

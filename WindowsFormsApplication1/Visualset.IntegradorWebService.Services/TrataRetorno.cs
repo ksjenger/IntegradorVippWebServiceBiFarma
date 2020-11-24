@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace IntegradorWebService.VIPP
@@ -137,7 +138,12 @@ namespace IntegradorWebService.VIPP
                 };
                 lRetornoInvalida.Add(oRetornoInvalida);
             }
+
+
         }
+
+
+ 
         #endregion
 
     }
