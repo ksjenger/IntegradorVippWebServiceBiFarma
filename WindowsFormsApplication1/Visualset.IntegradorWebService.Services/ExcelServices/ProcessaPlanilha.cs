@@ -13,7 +13,7 @@ using IntegradorWebService.Visualset.IntegradorWebService.Services;
 
 namespace IntegradorWebService.Services
 {
-    class ProcessaPlanilha
+    public class ProcessaPlanilha
     {
 
         #region Processa Planilha e retorna uma lista do tipo Postagem

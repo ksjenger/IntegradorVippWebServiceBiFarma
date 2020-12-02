@@ -37,20 +37,22 @@
             this.btnEntrar = new System.Windows.Forms.Button();
             this.btnSair = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkLembrar = new System.Windows.Forms.CheckBox();
+            this.linkLbnEsqueci = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // txtUsr
             // 
             this.txtUsr.Location = new System.Drawing.Point(98, 63);
             this.txtUsr.Name = "txtUsr";
-            this.txtUsr.Size = new System.Drawing.Size(119, 20);
+            this.txtUsr.Size = new System.Drawing.Size(156, 20);
             this.txtUsr.TabIndex = 0;
             // 
             // txtPwd
             // 
             this.txtPwd.Location = new System.Drawing.Point(98, 92);
             this.txtPwd.Name = "txtPwd";
-            this.txtPwd.Size = new System.Drawing.Size(119, 20);
+            this.txtPwd.Size = new System.Drawing.Size(156, 20);
             this.txtPwd.TabIndex = 1;
             this.txtPwd.UseSystemPasswordChar = true;
             // 
@@ -75,7 +77,6 @@
             // labelIcon
             // 
             this.labelIcon.AutoSize = true;
-            //this.labelIcon.Image = global::IntegradorWebService.Properties.Resources.logo_visualset;
             this.labelIcon.Location = new System.Drawing.Point(217, 21);
             this.labelIcon.Name = "labelIcon";
             this.labelIcon.Size = new System.Drawing.Size(0, 13);
@@ -83,7 +84,7 @@
             // 
             // btnEntrar
             // 
-            this.btnEntrar.Location = new System.Drawing.Point(49, 127);
+            this.btnEntrar.Location = new System.Drawing.Point(49, 149);
             this.btnEntrar.Name = "btnEntrar";
             this.btnEntrar.Size = new System.Drawing.Size(91, 23);
             this.btnEntrar.TabIndex = 7;
@@ -93,7 +94,7 @@
             // 
             // btnSair
             // 
-            this.btnSair.Location = new System.Drawing.Point(162, 127);
+            this.btnSair.Location = new System.Drawing.Point(162, 148);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(92, 23);
             this.btnSair.TabIndex = 8;
@@ -111,11 +112,36 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Digite os dados para acessar";
             // 
+            // checkLembrar
+            // 
+            this.checkLembrar.AutoSize = true;
+            this.checkLembrar.Location = new System.Drawing.Point(49, 121);
+            this.checkLembrar.Name = "checkLembrar";
+            this.checkLembrar.Size = new System.Drawing.Size(98, 17);
+            this.checkLembrar.TabIndex = 10;
+            this.checkLembrar.Text = "Lembrar Senha";
+            this.checkLembrar.UseVisualStyleBackColor = true;
+            // 
+            // linkLbnEsqueci
+            // 
+            this.linkLbnEsqueci.AutoSize = true;
+            this.linkLbnEsqueci.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkLbnEsqueci.LinkVisited = true;
+            this.linkLbnEsqueci.Location = new System.Drawing.Point(162, 122);
+            this.linkLbnEsqueci.Name = "linkLbnEsqueci";
+            this.linkLbnEsqueci.Size = new System.Drawing.Size(110, 13);
+            this.linkLbnEsqueci.TabIndex = 11;
+            this.linkLbnEsqueci.TabStop = true;
+            this.linkLbnEsqueci.Text = "Esqueci minha Senha";
+            this.linkLbnEsqueci.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLbnEsqueci_LinkClicked);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 169);
+            this.ClientSize = new System.Drawing.Size(324, 185);
+            this.Controls.Add(this.linkLbnEsqueci);
+            this.Controls.Add(this.checkLembrar);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnSair);
             this.Controls.Add(this.btnEntrar);
@@ -128,8 +154,7 @@
             this.MaximizeBox = false;
             this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Login";
-            this.Load += new System.EventHandler(this.Login_Load);
+            this.Text = "Login";            
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -145,5 +170,7 @@
         private System.Windows.Forms.Button btnEntrar;
         private System.Windows.Forms.Button btnSair;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkLembrar;
+        private System.Windows.Forms.LinkLabel linkLbnEsqueci;
     }
 }

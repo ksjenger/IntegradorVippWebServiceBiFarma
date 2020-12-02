@@ -125,18 +125,6 @@ namespace IntegradorWebService.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SaveFile {
-            get {
-                return ((string)(this["SaveFile"]));
-            }
-            set {
-                this["SaveFile"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("PEFycmF5T2ZGb3JtYXRhY2FvUGxhbmlsaGE+PEZvcm1hdGFjYW9QbGFuaWxoYT48Tm9tZUF0cmlidXRvP" +
             "kNOUEpDUEY8L05vbWVBdHJpYnV0bz48Q29sdW5hPjE8L0NvbHVuYT48SW5pY2lvPjI8L0luaWNpbz48V" +
             "GFtYW5obz4xNDwvVGFtYW5obz48RGVsaW1pdGFkb3I+PC9EZWxpbWl0YWRvcj48L0Zvcm1hdGFjYW9Qb" +
@@ -209,49 +197,39 @@ namespace IntegradorWebService.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://vpsrv.visualset.com.br/PostagemVipp.asmx")]
-        public string WindowsFormsApplication1_WSVIPP_PostagemVipp {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LembrarSenha {
             get {
-                return ((string)(this["WindowsFormsApplication1_WSVIPP_PostagemVipp"]));
+                return ((bool)(this["LembrarSenha"]));
+            }
+            set {
+                this["LembrarSenha"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ServicoAtivo {
+            get {
+                return ((bool)(this["ServicoAtivo"]));
+            }
+            set {
+                this["ServicoAtivo"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string UsuarioFtp {
+        public string SaveFile {
             get {
-                return ((string)(this["UsuarioFtp"]));
+                return ((string)(this["SaveFile"]));
             }
             set {
-                this["UsuarioFtp"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SenhaFtp {
-            get {
-                return ((string)(this["SenhaFtp"]));
-            }
-            set {
-                this["SenhaFtp"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ServidorFtp {
-            get {
-                return ((string)(this["ServidorFtp"]));
-            }
-            set {
-                this["ServidorFtp"] = value;
+                this["SaveFile"] = value;
             }
         }
     }

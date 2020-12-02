@@ -1,5 +1,4 @@
 ﻿using Excel = Microsoft.Office.Interop.Excel;
-using Microsoft.Office.Interop.Excel;
 using IntegradorWebService.VIPP;
 using System.Windows.Forms;
 using System.Windows;
@@ -7,7 +6,7 @@ using System;
 using IntegradorWebService.Visualset.IntegradorWebService.Entities;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
+using System.Configuration;
 
 namespace IntegradorWebService.ExcelServices
 {
@@ -19,25 +18,27 @@ namespace IntegradorWebService.ExcelServices
             DateTime saveNow = DateTime.Now;
             var sdf = saveNow.ToString("dd-MM-yyyy_hh.mm");
 
-            while (Properties.Settings.Default.SaveFile == "")
+            IniFile oIniFile = new IniFile("Config");
+
+            while (oIniFile.IniReadString("SaveFile") == "")
             {
                 System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo de log de importação.", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
                 using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
                 {
-                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.SaveFile;
+                    folderBrowserDialog.SelectedPath = oIniFile.IniReadString("SaveFile");
                     folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
                     folderBrowserDialog.ShowDialog();
-                    Properties.Settings.Default.SaveFile = folderBrowserDialog.SelectedPath;
+
+                    oIniFile.IniWriteString("SaveFile", folderBrowserDialog.SelectedPath);
                     Properties.Settings.Default.Save();
                 }
             }
-            string FileName = Properties.Settings.Default.SaveFile + "\\" + Form1.nomeArquivo + " " + sdf + ".csv";
+            string FileName = oIniFile.IniReadString("SaveFile") + "\\" + Form1.nomeArquivo + " " + sdf + ".csv";
 
             try
             {
                 using (StreamWriter file = new System.IO.StreamWriter(FileName, false, new UTF8Encoding(true)))
                 {
-                    int cont = 0;
                     string retornoHeader = string.Join(" ; ", "Status da Importação", "Nome do Destinatario", "Lista de Erros / Etiqueta", "Observacao VIPP");
                     file.WriteLine(retornoHeader);
                     foreach (RetornoInvalida oRetorno in TrataRetorno.lRetornoInvalida)
@@ -63,33 +64,74 @@ namespace IntegradorWebService.ExcelServices
                 System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
                 using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
                 {
-                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.SaveFile;
+                    folderBrowserDialog.SelectedPath = oIniFile.IniReadString("SaveFile");
                     folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
                     folderBrowserDialog.ShowDialog();
-                    Properties.Settings.Default.SaveFile = folderBrowserDialog.SelectedPath;
-                    Properties.Settings.Default.Save();
+                    oIniFile.IniWriteString("SaveFile", folderBrowserDialog.SelectedPath);
                 }
 
-                FileName = Properties.Settings.Default.SaveFile + "\\" + Form1.nomeArquivo + " " + sdf + ".csv";
-                //using (StreamWriter file = new System.IO.StreamWriter(FileName, false, new UTF8Encoding(true)))
-                //{
-                //    int cont = 0;
-                //    string retornoHeader = string.Join(" ; ", "Status da Importação", "Nome do Destinatario", "Lista de Erros / Etiqueta", "Observacao VIPP");
-                //    file.WriteLine(retornoHeader);
-                //    foreach (RetornoInvalida oRetorno in TrataRetorno.lRetornoInvalida)
-                //    {
-                //        string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Erro.Trim(), oRetorno.Observacao.Trim());
-                //        file.WriteLine(retorno);
-                //    }
+                FileName = oIniFile.IniReadString("SaveFile") + "\\" + Form1.nomeArquivo + " " + sdf + ".csv";
+            }
 
-                //    foreach (RetornoValida oRetorno in TrataRetorno.lRetornoValida)
-                //    {
-                //        string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Etiqueta.Trim(), oRetorno.Observacao.Trim());
-                //        file.WriteLine(retorno);
-                //    }
-                //    file.Close();
+        }
 
-                //}
+
+        public static void GravaRetornoTxt(string filename)
+        {
+            DateTime saveNow = DateTime.Now;
+            var sdf = saveNow.ToString("dd-MM-yyyy_hh.mm");
+            IniFile oIniFile = new IniFile("Config");
+
+            while (oIniFile.IniReadString("SaveFile") == "")
+            {
+                System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo de log de importação.", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
+                using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+                {
+                    folderBrowserDialog.SelectedPath = oIniFile.IniReadString("SaveFile");
+                    folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
+                    folderBrowserDialog.ShowDialog();
+                    oIniFile.IniWriteString("SaveFile", folderBrowserDialog.SelectedPath);
+                }
+            }
+            string FileName = oIniFile.IniReadString("SaveFile") + "\\" + filename + " " + sdf + ".csv";
+
+            try
+            {
+                using (StreamWriter file = new System.IO.StreamWriter(FileName, false, new UTF8Encoding(true)))
+                {                   
+                    string retornoHeader = string.Join(" ; ", "Status da Importação", "Nome do Destinatario", "Lista de Erros / Etiqueta", "Observacao VIPP");
+                    file.WriteLine(retornoHeader);
+                    foreach (RetornoInvalida oRetorno in TrataRetorno.lRetornoInvalida)
+                    {
+                        string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Erro.Trim(), oRetorno.Observacao.Trim());
+                        file.WriteLine(retorno);
+                    }
+
+                    foreach (RetornoValida oRetorno in TrataRetorno.lRetornoValida)
+                    {
+                        string retorno = string.Join(" ; ", oRetorno.Status.Trim(), oRetorno.Nome.Trim(), oRetorno.Etiqueta.Trim(), oRetorno.Observacao.Trim());
+                        file.WriteLine(retorno);
+                    }
+                    file.Close();
+
+                }
+            }
+            catch (DirectoryNotFoundException e)
+            {
+
+                System.Windows.MessageBox.Show(e.Message, "Erro ao salvar o retorno.", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
+                using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+                {
+                    folderBrowserDialog.SelectedPath = oIniFile.IniReadString("SaveFile");
+                    folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
+                    folderBrowserDialog.ShowDialog();
+                    oIniFile.IniWriteString("SaveFile", folderBrowserDialog.SelectedPath);
+                }
+
+                FileName = oIniFile.IniReadString("SaveFile") + "\\" + Form1.nomeArquivo + " " + sdf + ".csv";
+
             }
 
         }
@@ -101,6 +143,7 @@ namespace IntegradorWebService.ExcelServices
         #region Grava Retorno Excel
         public static void GravaRetornoExcel()
         {
+            IniFile oIniFile = new IniFile("Config");
             #region Salva a lista de retorno no Excel
             Excel.Application xlsApp = new Excel.Application();
             Excel.Workbook xlsWorkbook = xlsApp.Workbooks.Open(Form1.path, 0, true, 5, "", "", true, Excel.XlPlatform.xlWindows, "", false, false, 0, false, false, false);
@@ -195,20 +238,19 @@ namespace IntegradorWebService.ExcelServices
             var sdf = saveNow.ToString("dd-MM-yyyy_hh.mm");
 
 
-            while (Properties.Settings.Default.SaveFile == "")
+            while (oIniFile.IniReadString("SaveFile") == "")
             {
                 System.Windows.MessageBox.Show("Selecione o local para Salvar o arquivo", "Salvar arquivo", MessageBoxButton.OK, MessageBoxImage.Information);
                 using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
                 {
-                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.SaveFile;
+                    folderBrowserDialog.SelectedPath = oIniFile.IniReadString("SaveFile");
                     folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
                     folderBrowserDialog.ShowDialog();
-                    Properties.Settings.Default.SaveFile = folderBrowserDialog.SelectedPath;
-                    Properties.Settings.Default.Save();
+                    oIniFile.IniWriteString("SaveFile", folderBrowserDialog.SelectedPath);
                 }
             }
 
-            var nomeArquivo = Properties.Settings.Default.SaveFile + "\\" + Form1.nomeArquivo + " " + sdf + ".xlsx";
+            var nomeArquivo = oIniFile.IniReadString("SaveFile") + "\\" + Form1.nomeArquivo + " " + sdf + ".xlsx";
             xlsApp.ActiveWorkbook.SaveAs(nomeArquivo);
             xlsApp.Quit();
             #endregion

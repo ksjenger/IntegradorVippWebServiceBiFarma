@@ -1,35 +1,41 @@
 ﻿using IntegradorWebService.ExcelServices;
 using IntegradorWebService.Rest;
 using IntegradorWebService.Services;
+using IntegradorWebService.VIPP;
+using IntegradorWebService.Visualset.IntegradorWebService.Entities;
+using IntegradorWebService.Visualset.IntegradorWebService.View;
 using IntegradorWebService.WSVIPP;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Configuration;
-using IntegradorWebService.Visualset.IntegradorWebService.Entities;
-using IntegradorWebService.Visualset.IntegradorWebService.View;
-using IntegradorWebService.VIPP;
+using System.Windows.Forms;
 
 namespace IntegradorWebService
 {
     public partial class Form1 : Form
     {
+        IniFile oIniFile = new IniFile("Config");
 
         List<Postagem> lVipp = new List<Postagem>();
-        readonly Rootobject lPerfil = new Rootobject();
+        public Rootobject lPerfil = new Rootobject();
+        public PerfilVipp oPerfil = new PerfilVipp();
 
         public static string path;
         public static string nomeArquivo;
         public static string caminhoArquivo;
         public static string tipoArquivo;
 
-        public Form1(string usuario, string senha)
+        public Form1()
         {
             InitializeComponent();
-            BtnFtp.Visible = false;
-            this.Text = "Importador Visual Personalizado - Versão: " + Application.ProductVersion + "  -  " + usuario;
+            IniFile oIniFile = new IniFile("Config");
+            oPerfil.Usuario = oIniFile.IniReadString("Usuario");
+            oPerfil.Token = oIniFile.IniReadString("Senha");
+            oPerfil.IdPerfil = oIniFile.IniReadString("IdPerfil");
+            //BtnFtp.Visible = false;
+            this.Text = "Importador Visual Personalizado - Versão: " + Application.ProductVersion + "  -  " + oPerfil.Usuario;
             btnEnviar.Enabled = false;
-            lPerfil = RestPerfilImportacao.ProcessaListaPerfil(usuario, senha);
+            lPerfil = RestPerfilImportacao.ProcessaListaPerfil(oPerfil.Usuario, oPerfil.Token);
             comboPerfil.Items.Add("Selecione o Perfil");
             comboPerfil.SelectedIndex = 0;
             for (int i = 0; i < lPerfil.Data.Length; i++)
@@ -37,10 +43,7 @@ namespace IntegradorWebService
                 comboPerfil.Items.Add(lPerfil.Data[i].IdPerfil + " - " + lPerfil.Data[i].NomePerfil);
             }
             progressBar.Visible = false;
-            
-
         }
-
 
         private void Button2_Click(object sender, EventArgs e)
         {
@@ -58,7 +61,7 @@ namespace IntegradorWebService
 
                 #region Chama o metodo para Postar Objeto
                 labelProgresso.Text = "Transmitindo para o VIPP";
-                VIPP.PostarObjetoVIPP.Postagem(lVipp, this);
+                PostarObjetoVIPP.Postagem(lVipp, this, oPerfil);
 
                 #endregion
 
@@ -78,7 +81,7 @@ namespace IntegradorWebService
 
                 }
 
-                if(TrataRetorno.lRetornoValida.Count > 0)
+                if (TrataRetorno.lRetornoValida.Count > 0)
                 {
                     MessageBox.Show(string.Concat("Foram importados ", TrataRetorno.lRetornoValida.Count, " objetos com sucesso!"), "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
@@ -113,7 +116,7 @@ namespace IntegradorWebService
         #region Abre o Arquivo
         private void Button1_Click_1(object sender, EventArgs e)
         {
-            
+
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 //openFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
@@ -139,14 +142,12 @@ namespace IntegradorWebService
                     }
                     else
                     {
-                        labelProgresso.Text = "Arquivo importado!";                                                
+                        labelProgresso.Text = "Arquivo importado!";
                         btnEnviar.Enabled = true;
                         comboPerfil.Focus();
                     }
-
                 }
             }
-
         }
         #endregion
 
@@ -161,18 +162,43 @@ namespace IntegradorWebService
         {
             using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
             {
-                folderBrowserDialog.SelectedPath = Properties.Settings.Default.SaveFile;
+                IniFile oIniFile = new IniFile("Config");
+                folderBrowserDialog.SelectedPath = oIniFile.IniReadString("SaveFile");
                 folderBrowserDialog.Description = "Selecione onde salvar o arquivo processado";
                 folderBrowserDialog.ShowDialog();
-                Properties.Settings.Default.SaveFile = folderBrowserDialog.SelectedPath;
-                Properties.Settings.Default.Save();
+                oIniFile.IniWriteString("SaveFile", folderBrowserDialog.SelectedPath);
             }
         }
 
         private void BtnFtp_Click(object sender, EventArgs e)
         {
-            FormFtp oForm = new FormFtp();
+            FormFtp oForm = new FormFtp(lPerfil);
             oForm.Show();
+        }
+
+
+        private void notifyIcon1_Click(object sender, EventArgs e)
+        {
+            this.Visible = true;
+            this.WindowState = FormWindowState.Normal;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.ShowInTaskbar = true;
+            notifyIcon1.Visible = false;
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Visible = false;
+                this.ShowInTaskbar = false;
+                notifyIcon1.Visible = true;
+            }            
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

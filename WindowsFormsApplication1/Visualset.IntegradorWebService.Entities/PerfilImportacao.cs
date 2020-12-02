@@ -13,5 +13,12 @@ namespace IntegradorWebService.Visualset.IntegradorWebService.Entities
 
         public string IdPerfil { get; set; }
 
+        public PerfilImportacao()
+        {
+            Usuario = string.Empty;
+            Token = string.Empty;
+            IdPerfil = string.Empty;
+
+        }
     }
 }

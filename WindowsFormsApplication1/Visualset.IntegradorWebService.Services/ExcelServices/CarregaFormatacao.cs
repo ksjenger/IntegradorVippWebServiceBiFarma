@@ -44,9 +44,9 @@ namespace IntegradorWebService.Visualset.IntegradorWebService.Services.ExcelServ
 
                 return lista;
             }
-            catch (FormatException e)
+            catch (FormatException)
             {
-                throw e; 
+                throw; 
             }
 
         }

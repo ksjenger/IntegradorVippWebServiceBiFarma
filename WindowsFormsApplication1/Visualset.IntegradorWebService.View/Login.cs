@@ -1,14 +1,5 @@
-﻿using IntegradorWebService.VIPP;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web.Script.Serialization;
+﻿using System;
+using System.Configuration;
 using System.Windows.Forms;
 using IntegradorWebService.Rest;
 using IntegradorWebService.Visualset.IntegradorWebService.Entities;
@@ -24,6 +15,13 @@ namespace IntegradorWebService
         {
             InitializeComponent();
             this.Text = "Login - Versão: " + Application.ProductVersion;
+            IniFile oIniFile = new IniFile("Config");
+            if (Properties.Settings.Default.LembrarSenha)
+            {
+                txtUsr.Text = oIniFile.IniReadString("Usuario");
+                txtPwd.Text = oIniFile.IniReadString("Senha");
+                checkLembrar.Checked = true;
+            }
 
         }
 
@@ -34,7 +32,6 @@ namespace IntegradorWebService
 
         private void BtnEntrar_Click(object sender, EventArgs e)
         {
-
             Operfil = new PerfilImportacao()
             {
                 Usuario = txtUsr.Text,
@@ -56,14 +53,19 @@ namespace IntegradorWebService
             if (Logar.LogarVipp(txtUsr.Text, txtPwd.Text))
             {
                 Hide();
-                new Form1(txtUsr.Text, txtPwd.Text).ShowDialog();
-                Application.Exit();
+                IniFile oIniFile = new IniFile("Config");
+                oIniFile.IniWriteString("Usuario", txtUsr.Text);
+                oIniFile.IniWriteString("Senha", txtPwd.Text);               
+                Properties.Settings.Default.LembrarSenha = checkLembrar.Checked;
+                Properties.Settings.Default.Save();
+                new Form1().ShowDialog();
+                //Application.Exit();
             }
         }
 
-        private void Login_Load(object sender, EventArgs e)
+        private void linkLbnEsqueci_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            System.Diagnostics.Process.Start("https://vipp.visualset.com.br/vipp/login/EsqueceuUsuarioSenha.php");
         }
     }
 }

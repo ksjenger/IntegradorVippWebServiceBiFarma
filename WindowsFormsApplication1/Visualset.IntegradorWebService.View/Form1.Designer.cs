@@ -30,6 +30,7 @@ namespace IntegradorWebService
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.labelPath = new System.Windows.Forms.Label();
             this.labelProgresso = new System.Windows.Forms.Label();
@@ -41,6 +42,7 @@ namespace IntegradorWebService
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.BtnFtp = new System.Windows.Forms.Button();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,6 +111,11 @@ namespace IntegradorWebService
             this.BtnFtp.UseVisualStyleBackColor = true;
             this.BtnFtp.Click += new System.EventHandler(this.BtnFtp_Click);
             // 
+            // notifyIcon1
+            // 
+            resources.ApplyResources(this.notifyIcon1, "notifyIcon1");
+            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -128,6 +135,8 @@ namespace IntegradorWebService
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -147,6 +156,7 @@ namespace IntegradorWebService
         private PictureBox pictureBox1;
         public ProgressBar progressBar;
         private Button BtnFtp;
+        private NotifyIcon notifyIcon1;
     }
 }
 
